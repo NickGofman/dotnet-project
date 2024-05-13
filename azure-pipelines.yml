@@ -9,8 +9,8 @@ trigger:
 pool:
   vmImage: ubuntu-latest
   name: default
-
-buildConfiguration: 'Release'
+variables:
+  buildConfiguration: 'Release'
 
 # Steps to run in the pipeline
 steps:
