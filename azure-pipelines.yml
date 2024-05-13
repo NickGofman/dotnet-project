@@ -19,14 +19,14 @@ steps:
     displayName: 'Build CommonLib'
     inputs:
       command: 'build' 
-      arguments: '--configuration $(buildConfiguration)' 
+      arguments: '--configuration $(buildConfiguration) -p  Version=1.0.$(Build.BuildId)'
       projects: 'dotnew-SonarQube.csproj' 
 
   - task: DotNetCoreCLI@2 
     displayName: 'Pack CommonLib'
     inputs:
       command: 'pack' 
-      arguments: '--configuration $(buildConfiguration) --versioningScheme 1.0.$(Build.BuildId)'  # Include versioningScheme
+      arguments: '--configuration $(buildConfiguration) -p  Version=1.0.$(Build.BuildId)'  # Include versioningScheme
       packagesToPack: 'dotnew-SonarQube.csproj' 
       nobuild: true  
 
