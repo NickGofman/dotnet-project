@@ -1,0 +1,49 @@
+# Build artifacts
+**/artifacts/*
+
+# NuGet packages folder (if using package restore)
+**/packages/*
+
+# Visual Studio solution and project specific files
+*.sln
+*.suo
+*.user
+*.vbproj
+*.csproj
+
+# Test results and coverage files
+**/testresults/*
+**/coverage/*
+
+# IDE and OS specific cache directories
+[Dd]ebugPS/
+[Rr]eleasePS/
+*.psess
+*.vsp
+*.vspx
+*.suo
+*.tmp
+tmp/
+
+# Various editor temporary/cache files
+.sass-cache/
+*.cachefile
+
+# IDE settings and add-in data (if not shared)
+_ReSharper*/
+*.DotSettings.user
+.JustCode
+
+# Build server/CI/CD specific files
+*.pubxml
+*.publishproj
+PublishScripts/
+# But comment out the next line if you want to commit Azure App Service settings (caution: might contain passwords)
+# *.publishsettings
+
+# IDE generated code (uncomment if applicable)
+*.g.cs
+*.generated.cs
+
+# Logs
+*.log
