@@ -30,10 +30,21 @@ steps:
   #     packagesToPack: 'dotnew-SonarQube.csproj' 
   #     nobuild: true  
 
-  - script: dotnet pack -p Version=1.0.$(Build.BuildId)
-      displayName: 'build the artifact'
+
 
   - task: DotNetCoreCLI@2
+    - script: dotnet pack -p Version=1.0.$(Build.BuildId)
+      displayName: 'build the artifact'
+
+      
+    displayName: 'Pack NuGet package with version'
+    inputs:
+      targetType: 'inline'
+      script: |
+        # Define the path to the NuGet package
+        dotnet pack -p Version=1.0.$(Build.BuildId)
+
+
     displayName: 'Push NuGet package to hello-world-feed'
     inputs:
       targetType: 'inline'
