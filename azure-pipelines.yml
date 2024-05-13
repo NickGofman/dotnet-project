@@ -31,12 +31,12 @@ steps:
       versioningScheme: 'off' 
 
   - task: NuGetCommand@2 
-    displayName: 'Push CommonLib to TestFeed'
+    displayName: 'Push CommonLib to hello-world-feed'
     inputs:
       command: 'push' 
       feedsToUse: 'select' 
       packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg' 
       nuGetFeedType: 'internal' 
-      publishVstsFeed: 'TestFeed' 
+      publishVstsFeed: 'hello-world-feed' 
       versioningScheme: 'off' 
       allowPackageConflicts: true 
