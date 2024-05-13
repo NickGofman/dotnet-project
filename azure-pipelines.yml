@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
@@ -13,42 +8,22 @@ pool:
 variables:
   buildConfiguration: 'Release'
 
-# Steps to run in the pipeline
 steps:
-  # - task: DotNetCoreCLI@2 
-  #   displayName: 'Build CommonLib'
-  #   inputs:
-  #     command: 'build' 
-  #     arguments: '--configuration $(buildConfiguration) -p  Version=1.0.$(Build.BuildId)'
-  #     projects: 'dotnew-SonarQube.csproj' 
-
-  # - task: DotNetCoreCLI@2 
-  #   displayName: 'Pack CommonLib'
-  #   inputs:
-  #     command: 'pack' 
-  #     arguments: '--configuration $(buildConfiguration) -p  Version=1.0.$(Build.BuildId)'  # Include versioningScheme
-  #     packagesToPack: 'dotnew-SonarQube.csproj' 
-  #     nobuild: true  
-
-
-
   - task: DotNetCoreCLI@2
     displayName: 'Pack NuGet package with version'
     inputs:
-      targetType: 'inline'
-      script: |
-        # Define the path to the NuGet package
-        dotnet pack -p Version=1.0.$(Build.BuildId)
+      command: 'pack'
+      arguments: '-p:Version=1.0.$(Build.BuildId)'
+      packagesToPack: 'dotnew-SonarQube.csproj'
+      nobuild: true
 
   - task: DotNetCoreCLI@2
-    - script: dotnet pack -p Version=1.0.$(Build.BuildId)
-      displayName: 'build the artifact'
     displayName: 'Push NuGet package to hello-world-feed'
     inputs:
       targetType: 'inline'
       script: |
         # Define the path to the NuGet package
-        $packagePath = "$(System.DefaultWorkingDirectory)/bin/Release/*.nupkg"
+        $packagePath = "$(System.DefaultWorkingDirectory)/**/*.nupkg"
         
         # Define the NuGet feed source and API key
         $nugetSource = "hello-world-feed"
@@ -56,4 +31,3 @@ steps:
         
         # Push the NuGet package to the feed
         dotnet nuget push --source $nugetSource --api-key $apiKey $packagePath
-
