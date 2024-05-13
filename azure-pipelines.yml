@@ -10,12 +10,33 @@ pool:
   vmImage: ubuntu-latest
   name: default
 
-steps:
-- script: echo Hello, world!
-- script: dotnet build
-  displayName: 'Run a one-line script'
+buildConfiguration: 'Release'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+# Steps to run in the pipeline
+steps:
+  - task: DotNetCoreCLI@2 
+    displayName: 'Build CommonLib'
+    inputs:
+      command: 'build' 
+      arguments: '--configuration $(buildConfiguration)' 
+      projects: 'dotnew-SonarQube.csproj' 
+
+  - task: DotNetCoreCLI@2 
+    displayName: 'Pack CommonLib'
+    inputs:
+      command: 'pack' 
+      arguments: '--configuration $(buildConfiguration)' 
+      packagesToPack: 'dotnew-SonarQube.csproj' 
+      nobuild: true 
+      versioningScheme: 'off' 
+
+  - task: NuGetCommand@2 
+    displayName: 'Push CommonLib to TestFeed'
+    inputs:
+      command: 'push' 
+      feedsToUse: 'select' 
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg' 
+      nuGetFeedType: 'internal' 
+      publishVstsFeed: 'TestFeed' 
+      versioningScheme: 'off' 
+      allowPackageConflicts: true 
