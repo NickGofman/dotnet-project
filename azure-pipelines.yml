@@ -13,7 +13,7 @@ steps:
     displayName: 'Pack NuGet package with version'
     inputs:
       command: 'pack'
-      arguments: '-p:Version=1.0.$(Build.BuildId)'
+      arguments: '-p Version=1.0.$(Build.BuildId)'
       packagesToPack: 'dotnew-SonarQube.csproj'
       nobuild: true
 
