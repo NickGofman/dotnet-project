@@ -37,7 +37,7 @@ steps:
       targetType: 'inline'
       script: |
         # Define the path to the NuGet package
-        $packagePath = "$(Build.ArtifactStagingDirectory)\dotnew-SonarQube.1.0.0.nupkg"
+        $packagePath = "$(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.0.nupkg"
         
         # Define the NuGet feed source and API key
         $nugetSource = "hello-world-feed"
