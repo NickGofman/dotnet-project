@@ -15,20 +15,23 @@ variables:
 
 # Steps to run in the pipeline
 steps:
-  - task: DotNetCoreCLI@2 
-    displayName: 'Build CommonLib'
-    inputs:
-      command: 'build' 
-      arguments: '--configuration $(buildConfiguration) -p  Version=1.0.$(Build.BuildId)'
-      projects: 'dotnew-SonarQube.csproj' 
+  # - task: DotNetCoreCLI@2 
+  #   displayName: 'Build CommonLib'
+  #   inputs:
+  #     command: 'build' 
+  #     arguments: '--configuration $(buildConfiguration) -p  Version=1.0.$(Build.BuildId)'
+  #     projects: 'dotnew-SonarQube.csproj' 
 
-  - task: DotNetCoreCLI@2 
-    displayName: 'Pack CommonLib'
-    inputs:
-      command: 'pack' 
-      arguments: '--configuration $(buildConfiguration) -p  Version=1.0.$(Build.BuildId)'  # Include versioningScheme
-      packagesToPack: 'dotnew-SonarQube.csproj' 
-      nobuild: true  
+  # - task: DotNetCoreCLI@2 
+  #   displayName: 'Pack CommonLib'
+  #   inputs:
+  #     command: 'pack' 
+  #     arguments: '--configuration $(buildConfiguration) -p  Version=1.0.$(Build.BuildId)'  # Include versioningScheme
+  #     packagesToPack: 'dotnew-SonarQube.csproj' 
+  #     nobuild: true  
+
+  - script: dotnet pack -p Version=1.0.$(Build.BuildId)
+      displayName: 'build the artifact'
 
   - task: DotNetCoreCLI@2
     displayName: 'Push NuGet package to hello-world-feed'
