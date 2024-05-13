@@ -31,13 +31,17 @@ steps:
       nobuild: true 
       versioningScheme: 'off' 
 
-  - task: NuGetCommand@2 
-    displayName: 'Push CommonLib to hello-world-feed'
+  - task: PowerShell@2
+    displayName: 'Push NuGet package to hello-world-feed'
     inputs:
-      command: 'push' 
-      feedsToUse: 'select' 
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg' 
-      nuGetFeedType: 'internal' 
-      publishVstsFeed: 'hello-world-feed' 
-      versioningScheme: 'off' 
-      allowPackageConflicts: true 
+      targetType: 'inline'
+      script: |
+        # Define the path to the NuGet package
+        $packagePath = "$(Build.ArtifactStagingDirectory)\dotnew-SonarQube.1.0.0.nupkg"
+        
+        # Define the NuGet feed source and API key
+        $nugetSource = "hello-world-feed"
+        $apiKey = "az"  # Replace "az" with your actual API key
+        
+        # Push the NuGet package to the feed
+        dotnet nuget push --source $nugetSource --api-key $apiKey $packagePath
