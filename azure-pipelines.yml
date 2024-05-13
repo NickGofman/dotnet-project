@@ -26,10 +26,9 @@ steps:
     displayName: 'Pack CommonLib'
     inputs:
       command: 'pack' 
-      arguments: '--configuration $(buildConfiguration)' 
+      arguments: '--configuration $(buildConfiguration) --versioningScheme byBuildNumber'  # Include versioningScheme
       packagesToPack: 'dotnew-SonarQube.csproj' 
-      nobuild: true 
-      versioningScheme: 'off' 
+      nobuild: true  
 
   - task: DotNetCoreCLI@2
     displayName: 'Push NuGet package to hello-world-feed'
