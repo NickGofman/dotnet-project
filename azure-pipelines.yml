@@ -33,10 +33,6 @@ steps:
 
 
   - task: DotNetCoreCLI@2
-    - script: dotnet pack -p Version=1.0.$(Build.BuildId)
-      displayName: 'build the artifact'
-
-      
     displayName: 'Pack NuGet package with version'
     inputs:
       targetType: 'inline'
@@ -44,7 +40,9 @@ steps:
         # Define the path to the NuGet package
         dotnet pack -p Version=1.0.$(Build.BuildId)
 
-
+  - task: DotNetCoreCLI@2
+    - script: dotnet pack -p Version=1.0.$(Build.BuildId)
+      displayName: 'build the artifact'
     displayName: 'Push NuGet package to hello-world-feed'
     inputs:
       targetType: 'inline'
@@ -58,3 +56,4 @@ steps:
         
         # Push the NuGet package to the feed
         dotnet nuget push --source $nugetSource --api-key $apiKey $packagePath
+
