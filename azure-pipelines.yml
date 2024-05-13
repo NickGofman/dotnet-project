@@ -26,7 +26,7 @@ steps:
     displayName: 'Pack CommonLib'
     inputs:
       command: 'pack' 
-      arguments: '--configuration $(buildConfiguration) --versioningScheme byBuildNumber'  # Include versioningScheme
+      arguments: '--configuration $(buildConfiguration) --versioningScheme 1.0.$(Build.BuildId)'  # Include versioningScheme
       packagesToPack: 'dotnew-SonarQube.csproj' 
       nobuild: true  
 
