@@ -31,7 +31,7 @@ steps:
       nobuild: true 
       versioningScheme: 'off' 
 
-  - task: Bash@3
+  - task: DotNetCoreCLI@2
     displayName: 'Push NuGet package to hello-world-feed'
     inputs:
       targetType: 'inline'
