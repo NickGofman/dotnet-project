@@ -1,29 +1,58 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# # Starter pipeline
+# # Start with a minimal pipeline that you can customize to build and deploy your code.
+# # Add steps that build, run tests, deploy, and more:
+# # https://aka.ms/yaml
+
+# trigger:
+# - main
+
+# pool:
+#   vmImage: ubuntu-latest
+#   name: default
+  
+# variables:
+#   buildConfiguration: 'Release'
+
+# # Steps to run in the pipeline
+# steps:
+
+# - script: dotnet pack -p Version=1.0.$(Build.BuildId)
+#   displayName: 'Create NuGet Package'
+
+# - script: dotnet nuget push --source "hello-world-feed" --api-key az $(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg
+#   displayName: 'publish NuGet Package'
+
+  
+
+
 
 trigger:
-- main
+  - main
 
 pool:
   vmImage: ubuntu-latest
-  name: default
-  
+
 variables:
   buildConfiguration: 'Release'
 
-# Steps to run in the pipeline
-steps:
+stages:
+  - stage: CreatePackage
+    jobs:
+      - job: CreateNuGetPackage
+        displayName: 'Create NuGet Package'
+        steps:
+          - script: |
+              echo "##vso[task.setvariable variable=packageVersion;isOutput=true]1.0.$(Build.BuildId)"
+            name: SetPackageVersion
 
-- script: dotnet pack -p Version=1.0.$(Build.BuildId)
-  displayName: 'Create NuGet Package'
-
-- script: dotnet nuget push --source "hello-world-feed" --api-key az $(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg
-  displayName: 'publish NuGet Package'
-
-  
-
-
-
+  - stage: PublishPackage
+    dependsOn: CreatePackage
+    jobs:
+      - job: PublishNuGetPackage
+        displayName: 'Publish NuGet Package'
+        variables:
+          packageVersion: $[stageDependencies.CreatePackage.CreateNuGetPackage.outputs['SetPackageVersion.packageVersion']]
+        steps:
+          - script: |
+              echo "The newly created version is $(packageVersion)"
 
