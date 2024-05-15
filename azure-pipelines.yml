@@ -16,32 +16,14 @@ variables:
 # Steps to run in the pipeline
 steps:
 
-# - script: dotnet pack -p Version=1.0.$(Build.BuildId)
-#   displayName: 'Create NuGet Package'
+- script: dotnet pack -p Version=1.0.$(Build.BuildId)
+  displayName: 'Create NuGet Package'
 
-# - script: dotnet nuget push --source "hello-world-feed" --api-key az $(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg
-#   displayName: 'publish NuGet Package'
+- script: dotnet nuget push --source "hello-world-feed" --api-key az $(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg
+  displayName: 'publish NuGet Package'
 
   
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build and Push NuGet Package'
-  inputs:
-    command: 'pack'
-    arguments: '--configuration $(buildConfiguration) --versioningScheme 1.0.$(Build.BuildId)'
-    # Assuming the NuGet package name is "dotnew-SonarQube" (update if different)
-    packagesToPack: '**/dotnew-SonarQube.csproj'  # Update project path if needed
 
-- script: |  # Use inline script for pushing with secure variable
-  displayName: 'Push NuGet Package (using secure variable)'
-  inputs:
-    targetType: 'inline'
-    script: |
-      nugetSource="hello-world-feed"  # Define NuGet feed source
-      apiKey=$(NugetApiKey)  # Access secure variable for API key
-      packagePath=$(Build.ArtifactStagingDirectory)/*.nupkg  # Use wildcard
-
-      # Push the NuGet package to the feed using captured output path and secure variable
-      dotnet nuget push --source "$nugetSource" --api-key "$apiKey" "$packagePath"
 
 
