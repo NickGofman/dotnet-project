@@ -37,16 +37,32 @@ variables:
   buildConfiguration: 'Release'
 
 stages:
+  - stage: Build
+    displayName: 'Build Stage'
+    jobs:
+      - job: BuildJob
+        displayName: 'Build Job'
+        steps:
+          - script: |
+              echo "Building the project..."
+              # Add your build commands here
+              dotnet build
+            displayName: 'Build'
+
   - stage: CreatePackage
+    displayName: 'Create Package Stage'
+    dependsOn: Build
     jobs:
       - job: CreateNuGetPackage
         displayName: 'Create NuGet Package'
         steps:
           - script: |
               echo "##vso[task.setvariable variable=packageVersion;isOutput=true]1.0.$(Build.BuildId)"
+              dotnet pack -p Version=packageVersion
             name: SetPackageVersion
 
   - stage: PublishPackage
+    displayName: 'Publish Package Stage'
     dependsOn: CreatePackage
     jobs:
       - job: PublishNuGetPackage
