@@ -55,5 +55,6 @@ stages:
           packageVersion: $[stageDependencies.CreatePackage.CreateNuGetPackage.outputs['SetPackageVersion.packageVersion']]
         steps:
           - script: |
+              dotnet nuget push --source "hello-world-feed" --api-key az $(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.$(packageVersion).nupkg
               echo "The newly created version is $(packageVersion)"
 
