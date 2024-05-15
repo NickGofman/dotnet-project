@@ -59,5 +59,4 @@ steps:
     $packagePath = "$(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg"
 
     # Push the NuGet package to the feed
-    dotnet nuget push --source $nugetSource --api-key $apiKey $packagePath
-
+    dotnet nuget push --source "$nugetSource" --api-key "$apiKey" "$packagePath"
