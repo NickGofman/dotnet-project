@@ -28,25 +28,17 @@ steps:
   displayName: 'Create NuGet Package'
 
 
-
-
-
-
 - script: dotnet nuget push --source "hello-world-feed" --api-key az $(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg
   displayName: 'publish NuGet Package'
 
   
-
-
-
- 
 
 - task: SonarQubePrepare@5
   inputs:
     SonarQube: 'sonar'
     scannerMode: 'MSBuild'
     projectKey: 'infinity-labs_infinity-labs_3ce926a0-c633-4e17-b074-80a9ea7cb3a6'
-    projectName: 'sonarQube'
+    # projectName: 'sonarQube'
 
 - task: SonarQubeAnalyze@5
   inputs:
