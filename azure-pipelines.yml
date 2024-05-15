@@ -32,8 +32,6 @@ steps:
   displayName: 'publish NuGet Package'
 
   
-
-
 - task: SonarQubePrepare@5
   inputs:
     SonarQube: 'sonar'
@@ -41,5 +39,5 @@ steps:
     projectKey: 'infinity-labs_infinity-labs_3ce926a0-c633-4e17-b074-80a9ea7cb3a6'
 
 
-- task: SonarQubeAnalyze@5
+# - task: SonarQubeAnalyze@5
 
