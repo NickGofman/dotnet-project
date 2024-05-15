@@ -22,28 +22,28 @@ steps:
 #       arguments: '--configuration $(buildConfiguration) -p  Version=1.0.$(Build.BuildId)'
 #       projects: 'dotnew-SonarQube.csproj' 
 
-  - task: DotNetCoreCLI@2 
-    displayName: 'Pack CommonLib'
-    inputs:
-      targetType: 'inline'
-      script: |
-        # Define the path to the NuGet package
-        dotnet pack -p Version=1.0.$(Build.BuildId)
+  # - task: DotNetCoreCLI@2 
+  #   displayName: 'Pack CommonLib'
+  #   inputs:
+  #     targetType: 'inline'
+  script: |
+    # Define the path to the NuGet package
+    dotnet pack -p Version=1.0.$(Build.BuildId)
         
  
 
-  - task: DotNetCoreCLI@2
-    displayName: 'Push NuGet package to hello-world-feed'
-    inputs:
-      targetType: 'inline'
-      script: |
-        # Define the path to the NuGet package
-        $packagePath = "$(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg"
-        
-        # Define the NuGet feed source and API key
-        $nugetSource = "hello-world-feed"
-        $apiKey = "az"  # Replace "az" with your actual API key
-        
-        # Push the NuGet package to the feed
-        # dotnet nuget push --source $nugetSource --api-key $apiKey $packagePath
-        dotnet nuget push --source "hello-world-feed" --api-key az $(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg
+  # - task: DotNetCoreCLI@2
+  #   displayName: 'Push NuGet package to hello-world-feed'
+  #   inputs:
+  #     targetType: 'inline'
+  script: |
+    # Define the path to the NuGet package
+    $packagePath = "$(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg"
+    
+    # Define the NuGet feed source and API key
+    $nugetSource = "hello-world-feed"
+    $apiKey = "az"  # Replace "az" with your actual API key
+    
+    # Push the NuGet package to the feed
+    # dotnet nuget push --source $nugetSource --api-key $apiKey $packagePath
+    dotnet nuget push --source "hello-world-feed" --api-key az $(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg
