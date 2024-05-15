@@ -15,12 +15,12 @@ variables:
 
 # Steps to run in the pipeline
 steps:
-  - task: DotNetCoreCLI@2 
-    displayName: 'Build CommonLib'
-    inputs:
-      command: 'build' 
-      arguments: '--configuration $(buildConfiguration) -p  Version=1.0.$(Build.BuildId)'
-      projects: 'dotnew-SonarQube.csproj' 
+#   - task: DotNetCoreCLI@2 
+#     displayName: 'Build CommonLib'
+#     inputs:
+#       command: 'build' 
+#       arguments: '--configuration $(buildConfiguration) -p  Version=1.0.$(Build.BuildId)'
+#       projects: 'dotnew-SonarQube.csproj' 
 
   - task: DotNetCoreCLI@2 
     displayName: 'Pack CommonLib'
@@ -38,7 +38,7 @@ steps:
       targetType: 'inline'
       script: |
         # Define the path to the NuGet package
-        $packagePath = "$(System.DefaultWorkingDirectory)/bin/Release/*.nupkg"
+        $packagePath = "$(System.DefaultWorkingDirectory)/bin/Release/1.0.$(Build.BuildId).nupkg"
         
         # Define the NuGet feed source and API key
         $nugetSource = "hello-world-feed"
