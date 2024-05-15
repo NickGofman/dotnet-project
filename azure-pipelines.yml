@@ -3,90 +3,36 @@
 # # Add steps that build, run tests, deploy, and more:
 # # https://aka.ms/yaml
 
-# trigger:
-# - main
-
-# pool:
-#   vmImage: ubuntu-latest
-#   name: default
-  
-# variables:
-#   buildConfiguration: 'Release'
-
-# # Steps to run in the pipeline
-# steps:
-
-# - script: dotnet pack -p Version=1.0.$(Build.BuildId)
-#   displayName: 'Create NuGet Package'
-
-# - script: dotnet nuget push --source "hello-world-feed" --api-key az $(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg
-#   displayName: 'publish NuGet Package'
-
-  
-
-
-
 trigger:
-  - main
+- main
 
 pool:
   vmImage: ubuntu-latest
   name: default
-
+  
 variables:
   buildConfiguration: 'Release'
 
-stages:
+# Steps to run in the pipeline
+steps:
+
+- script: |
+    major_version=1
+    minor_version=0
+    new_version="$major_version.$minor_version.$(Build.BuildId)"
+    echo "New artifact version: $new_version"
+    artifactVersion="$new_version"
+  displayName: 'Increment Version (Bash)'
+  
+- script: dotnet pack -p Version=1.0.$(Build.BuildId)
+  displayName: 'Create NuGet Package'
+
+- script: dotnet nuget push --source "hello-world-feed" --api-key az $(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg
+  displayName: 'publish NuGet Package'
+
+  
 
 
-  - stage: SetVersion
-    displayName: 'Create Package Stage'
-    jobs:
-      - job: CreateNuGetPackage
-        displayName: 'Create NuGet Package'
-        steps:
-          - script: |
-              echo "##vso[task.setvariable variable=packageVersion;isOutput=true]1.0.$(Build.BuildId)"
-            name: SetPackageVersion
-      - job: CreateNuGetPackage
-        displayName: 'Create NuGet Package'
-        steps:
-          - script: |
-              dotnet pack -p Version=1.0.$(Build.BuildId)
-              
-      - job: PublishNuGetPackage
-        displayName: 'Publish NuGet Package'
-        variables:
-          packageVersion: $[stageDependencies.CreatePackage.CreateNuGetPackage.outputs['SetPackageVersion.packageVersion']]
-        steps:
-          - script: |
-              ls
-              ls  
-              # dotnet nuget push --source "hello-world-feed" --api-key az $(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg
-              echo "The newly created version is $(packageVersion)"
-              
-  # - stage: CreatePackage
-  #   dependsOn: SetVersion
-  #   displayName: 'Create Package Stage'
-  #   jobs:
-  #     - job: CreateNuGetPackage
-  #       displayName: 'Create NuGet Package'
-  #       steps:
-  #         - script: |
-  #             dotnet pack -p Version=1.0.$(Build.BuildId)
 
-  # - stage: PublishPackage
-  #   displayName: 'Publish Package Stage'
-  #   dependsOn: CreatePackage
-  #   jobs:
-  #     - job: PublishNuGetPackage
-  #       displayName: 'Publish NuGet Package'
-  #       variables:
-  #         packageVersion: $[stageDependencies.CreatePackage.CreateNuGetPackage.outputs['SetPackageVersion.packageVersion']]
-  #       steps:
-  #         - script: |
-  #             ls
-  #             ls  
-  #             # dotnet nuget push --source "hello-world-feed" --api-key az $(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg
-  #             echo "The newly created version is $(packageVersion)"
+ 
 
