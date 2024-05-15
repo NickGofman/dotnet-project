@@ -39,7 +39,7 @@ variables:
 stages:
 
 
-  - stage: CreatePackage
+  - stage: SetVersion
     displayName: 'Create Package Stage'
     jobs:
       - job: CreateNuGetPackage
@@ -47,8 +47,17 @@ stages:
         steps:
           - script: |
               echo "##vso[task.setvariable variable=packageVersion;isOutput=true]1.0.$(Build.BuildId)"
-              dotnet pack -p Version=1.0.$(Build.BuildId)  --output $(Build.ArtifactStagingDirectory)/bin/Release/
             name: SetPackageVersion
+
+  - stage: CreatePackage
+    dependsOn: SetVersion
+    displayName: 'Create Package Stage'
+    jobs:
+      - job: CreateNuGetPackage
+        displayName: 'Create NuGet Package'
+        steps:
+          - script: |
+              dotnet pack -p Version=1.0.$(Build.BuildId)
 
   - stage: PublishPackage
     displayName: 'Publish Package Stage'
