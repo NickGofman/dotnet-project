@@ -23,6 +23,7 @@ steps:
 #   displayName: 'publish NuGet Package'
 
   
+
 - task: DotNetCoreCLI@2
   displayName: 'Build and Push NuGet Package'
   inputs:
@@ -30,8 +31,6 @@ steps:
     arguments: '--configuration $(buildConfiguration) --versioningScheme 1.0.$(Build.BuildId)'
     # Assuming the NuGet package name is "dotnew-SonarQube" (update if different)
     packagesToPack: '**/dotnew-SonarQube.csproj'  # Update project path if needed
-  outputs: # Capture the output path of the NuGet package
-    packageLocation: '$(build.artifactStagingDirectory)'
 
 - script: |  # Use inline script for pushing with secure variable
   displayName: 'Push NuGet Package (using secure variable)'
@@ -40,8 +39,9 @@ steps:
     script: |
       nugetSource="hello-world-feed"  # Define NuGet feed source
       apiKey=$(NugetApiKey)  # Access secure variable for API key
-      packagePath=$(build.artifactStagingDirectory)/*.nupkg  # Use wildcard
+      packagePath=$(Build.ArtifactStagingDirectory)/*.nupkg  # Use wildcard
 
       # Push the NuGet package to the feed using captured output path and secure variable
       dotnet nuget push --source "$nugetSource" --api-key "$apiKey" "$packagePath"
+
 
