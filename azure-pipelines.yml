@@ -46,17 +46,6 @@ steps:
     
 #     # Push the NuGet package to the feed
 #     dotnet nuget push --source $nugetSource --api-key $apiKey $packagePath
-#     # dotnet nuget push --source "hello-world-feed" --api-key az $(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg
+    dotnet nuget push --source "hello-world-feed" --api-key az $(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg
     
-- script: |
-    # Define the NuGet feed source
-    $nugetSource = "hello-world-feed"
 
-    # Define the API key
-    $apiKey = "az"  # Replace "az" with your actual API key
-
-    # Define the path to the NuGet package
-    $packagePath = "$(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg"
-
-    # Push the NuGet package to the feed
-    dotnet nuget push --source "$nugetSource" --api-key "$apiKey" "$packagePath"
