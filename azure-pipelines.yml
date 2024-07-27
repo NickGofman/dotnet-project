@@ -28,8 +28,22 @@ steps:
   displayName: 'Create NuGet Package'
 
 
+- task: NuGetCommand@2
+  inputs:
+    command: pack
+    packagesToPack: '**/*.csproj'
+    packDestination: '$(Build.ArtifactStagingDirectory)'
 
-  
+- task: NuGetAuthenticate@1
+  displayName: 'NuGet Authenticate'
+- task: NuGetCommand@2
+  displayName: 'NuGet push'
+  inputs:
+    command: push
+    publishVstsFeed: 'infinity-labs/test'
+    allowPackageConflicts: true
+
+
 # - task: SonarQubePrepare@5
   # inputs:
     # SonarQube: 'sonar'
