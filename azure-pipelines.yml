@@ -51,8 +51,8 @@ steps:
 
 
 
-- script: dotnet nuget push --source "hello-world-feed" --api-key az $(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg
-  displayName: 'publish NuGet Package'
+# - script: dotnet nuget push --source "hello-world-feed" --api-key az $(System.DefaultWorkingDirectory)/bin/Release/dotnew-SonarQube.1.0.$(Build.BuildId).nupkg
+  # displayName: 'publish NuGet Package'
 
 # - task: SonarQubeAnalyze@5
 
